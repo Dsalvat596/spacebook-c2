@@ -19,6 +19,7 @@ var SpacebookApp = function () {
 
   // the current id to assign to a post
   var currentId = 0;
+  var commentId = 0;
   var $posts = $('.posts');
 
   var _findPostById = function (id) {
@@ -28,14 +29,6 @@ var SpacebookApp = function () {
       }
     }
   }
-
-  /*var _findCommentById = function (id) {
-    for (var i = 0; i < posts[i].comments.length; i++) {
-      if (posts[i].comments[i].id === id) {
-        return posts[i].comments[i];
-      }
-    }
-  }*/
 
   var createPost = function (text) {
     var post = {
@@ -83,10 +76,11 @@ var SpacebookApp = function () {
     var post = _findPostById(postId);
 
     var commentObj = {
-      text: comment
+      text: comment,
+      id: commentId
     };
     post.comments.push(commentObj);
-
+    commentId += 1;
     console.log(posts);
   }
 
@@ -94,18 +88,22 @@ var SpacebookApp = function () {
   var renderComments = function (comments) {
     let commentString = '';
     for (let i = 0; i < comments.length; i++) {
-      commentString += '<p>' + comments[i].text + '</p>';
+      commentString += '<p class="comments-list" data-id=' + comments[i].id + '> ' + comments[i].text + '<button class="btn btn-warning remove-comment">Remove</button>' + '</p>';
     }
     return commentString;
   }
 
-  /*under construction
-    var removeComment = function (currentComment) {
-      var clicked =  $(currentComment).closest('.post').find().id;
-       var index = (posts.comments.findIndex(currentComment));
 
-       posts.comments.splice(posts.comments(index), 1);
-       renderComments();}*/
+  var removeComment = function (currentComment) {
+    var postPid = $(currentComment).closest('.post').data().id;
+
+    var commPid = $(currentComment).parent('.comments-list').data().id;
+
+    posts[postPid].comments.splice(posts.indexOf(commPid), 1);
+    console.log(posts);
+
+    renderPosts();
+  }
 
 
 
@@ -122,6 +120,7 @@ var SpacebookApp = function () {
     createPost: createPost,
     renderPosts: renderPosts,
     removePost: removePost,
+    posts: posts,
 
     // TODO: Implement
     createComment: createComment,
@@ -130,7 +129,7 @@ var SpacebookApp = function () {
     renderComments: renderComments,
 
     // TODO: Implement
-    // removeComment: removeComment,
+    removeComment: removeComment,
     toggleComments: toggleComments
   }
 }
@@ -166,7 +165,6 @@ $('.posts').on('click', '.add-comment', function () {
 
 })
 
-/*$('.posts').on('click', '.user-comments', function () {
-  var
-  
-})*/
+$('.posts').on('click', '.remove-comment', function () {
+  app.removeComment(this);
+})
