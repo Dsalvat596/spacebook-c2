@@ -2,6 +2,6 @@
   display: block;
 }
 
-.show {
-  display: none !important;
+.showit {
+  display: none;
 }

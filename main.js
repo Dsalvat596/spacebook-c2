@@ -110,7 +110,7 @@ var SpacebookApp = function () {
 
   var toggleComments = function (currentPost) {
     var $clickedPost = $(currentPost).closest('.post');
-    $clickedPost.find('.comments-container').toggleClass('show');
+    $clickedPost.find('.comments-container').toggleClass('showit');
   }
 
 
