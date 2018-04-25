@@ -1,7 +1,7 @@
 .comments-container {
-  display: none;
+  display: block;
 }
 
 .show {
-  display: block;
+  display: none !important;
 }
