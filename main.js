@@ -102,7 +102,7 @@ var SpacebookApp = function () {
     posts[postPid].comments.splice(posts.indexOf(commPid), 1);
     console.log(posts);
 
-    renderPosts();
+    $(currentComment).parent().remove();
   }
 
 
