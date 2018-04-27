@@ -45,18 +45,17 @@ var SpacebookApp = function () {
   var renderPosts = function () {
     $posts.empty();
 
-    for (var i = 0; i < posts.length; i += 1) {
-      var post = posts[i];
+   var source = $('#posts-template').html();
+   var template = Handlebars.compile(source);
+  
+   for(let i=0; i <posts.length; i++){
+     var newHTML = template(posts[i]);
+     $posts.append(newHTML);
+   }
 
-      var commentsContainer = '<div class="comments-container">' +
-        '<input type="text" class="comment-name">' +
-        '<button class="btn btn-primary add-comment">Post Comment</button>' + renderComments(post.comments) + '</div>';
-
-      $posts.append('<div class="post" data-id=' + post.id + '>' +
-        '<a href="#" class="remove">remove</a> ' + '<a href="#" class="show-comments">comments</a> ' + post.text +
-        commentsContainer + '</div>');
-    }
+   console.log(posts);
   }
+  
 
 
 
@@ -74,6 +73,7 @@ var SpacebookApp = function () {
 
   var createComment = function (comment, postId) {
     var post = _findPostById(postId);
+    console.log(post);
 
     var commentObj = {
       text: comment,
@@ -133,6 +133,7 @@ var SpacebookApp = function () {
     toggleComments: toggleComments
   }
 }
+
 
 var app = SpacebookApp();
 
