@@ -1,4 +1,5 @@
 var SpacebookApp = function () {
+  
   var posts = [
     // {text: "Hello world", id: 0, comments:[
     //   { text: "Man, this is a comment!"},
@@ -16,7 +17,13 @@ var SpacebookApp = function () {
     //   { text: "Man, this is a comment!"}
     // ]}
   ];
-
+  var STORAGE_ID = 'spacebook';
+  var saveToLocalStorage = function () {
+    localStorage.setItem(STORAGE_ID, JSON.stringify(posts));
+  }
+  var getFromLocalStorage = function () {
+    return JSON.parse(localStorage.getItem(STORAGE_ID) || '[]');
+  }
   // the current id to assign to a post
   var currentId = 0;
   var commentId = 0;
@@ -40,10 +47,12 @@ var SpacebookApp = function () {
     currentId += 1;
 
     posts.push(post);
+    saveToLocalStorage();
   }
 
   var renderPosts = function () {
     $posts.empty();
+    posts = getFromLocalStorage();
 
    var source = $('#posts-template').html();
    var template = Handlebars.compile(source);
@@ -68,6 +77,7 @@ var SpacebookApp = function () {
 
     posts.splice(posts.indexOf(post), 1);
     $clickedPost.remove();
+    saveToLocalStorage();
   }
 
 
@@ -81,6 +91,7 @@ var SpacebookApp = function () {
     };
     post.comments.push(commentObj);
     commentId += 1;
+    saveToLocalStorage();
     console.log(posts);
   }
 
@@ -101,8 +112,9 @@ var SpacebookApp = function () {
 
     posts[postPid].comments.splice(posts.indexOf(commPid), 1);
     console.log(posts);
-
+    saveToLocalStorage();
     $(currentComment).parent().remove();
+   
   }
 
 
@@ -121,6 +133,7 @@ var SpacebookApp = function () {
     renderPosts: renderPosts,
     removePost: removePost,
     posts: posts,
+    getFromLocalStorage: getFromLocalStorage,
 
     // TODO: Implement
     createComment: createComment,
@@ -136,7 +149,6 @@ var SpacebookApp = function () {
 
 
 var app = SpacebookApp();
-
 // immediately invoke the render method
 app.renderPosts();
 
