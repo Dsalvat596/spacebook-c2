@@ -8,7 +8,7 @@ class PostsRenderer {
         this.$commentTemplate = $('#comment-template').html();
     }
 
-    renderPosts(posts) {
+   renderPosts(posts) {
         this.$posts.empty();
         let template = Handlebars.compile(this.$postTemplate);
         for (let i = 0; i < posts.length; i++) {
@@ -17,7 +17,7 @@ class PostsRenderer {
           this.$posts.append(newHTML);
           this.renderComments(posts, i);
         }
-    }
+    } 
 
     renderComments(posts, postIndex) {
         let post = $(".post")[postIndex];

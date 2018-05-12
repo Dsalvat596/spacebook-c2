@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
+
 const SERVER_PORT = 8080;
 
 mongoose.connect('mongodb://localhost/spacebookDB', function() {
@@ -17,15 +18,71 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
+
+
+
+
+var aPost = new Post({
+  text: "This is a post"
+})
+
+var anotherPost = new Post({
+  text: "I made a post, too!"
+})
+
+aPost.comments.push({text: "Nice post!", user: "Wilson"});
+aPost.comments.push({text: "How is the weather?", user: "Phyllis"});
+aPost.comments.push({text: "Theres a snake in my boot!", user: "Woody"});
+
+anotherPost.comments.push({text: "this post is okay", user: "Nelson"});
+
+/*
+aPost.save()
+anotherPost.save();
+*/
+
 // You will need to create 5 server routes
 // These will define your API:
 
 // 1) to handle getting all posts and their comments
+app.get('/posts', function(req, res){
+  Post.find({}, function(err, allPosts){
+    if(err){
+      console.log(err);
+    } else {
+      res.send(allPosts);
+    }
+  });
+});
 // 2) to handle adding a post
+app.post('/posts', function(req, res){
+  var postFromClient = req.body;
+  console.log(postFromClient)
+
+  var NewPost = new Post(postFromClient);
+  NewPost.save(function(err, savedPost){
+    console.log('did it save into the db?')
+    console.log(savedPost);
+    res.send(savedPost);
+  }) 
+  
+})
 // 3) to handle deleting a post
+app.delete('/posts/id', function(req, res){
+  let id = req.params._id
+  console.log(id);
+  /*Post.findByIdAndRemove(id, (err, posts) =>{
+    if(err) return res.status(500).send(err){
+      console.log(err);
+    }else{
+   */ 
+  })
+
+
+
 // 4) to handle adding a comment to a post
 // 5) to handle deleting a comment from a post
 
 app.listen(SERVER_PORT, () => {
   console.log("Server started on port " + SERVER_PORT);
-});
+})
