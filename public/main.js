@@ -15,9 +15,8 @@ eventsHandler.registerRemoveComment();
 
 postsRepository.getPosts()
 .then(function(posts){
- postsRenderer.renderPosts(posts);   
-
+ postsRenderer.renderPosts(posts);
 })
 .catch(function(err){
     console.log(err)
-})
+});

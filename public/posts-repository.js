@@ -7,12 +7,21 @@
 
         }
 
+        /*findPostById(id) {
+            for (var i = 0; i < posts.length; i += 1) {
+              if (posts[i].id === id) {
+                return this.posts[i];
+              }
+            }
+        }*/
+
         getPosts() {
             return $.get('/posts')
                 .then(function (postsFromServer) {
                     this.posts = postsFromServer;
                     return this.posts;
                 })
+                
         }
 
         addPost(postText) {
@@ -35,8 +44,9 @@
                 method: "DELETE",
                 url: '/posts/' + index,
                 
-            })
-            this.posts.splice(index, 1);
+            }).then();
+            // this.posts.splice(0, 1);
+            // console.log(this.posts);
         }
 
         addComment(newComment, postIndex) {

@@ -68,15 +68,21 @@ app.post('/posts', function(req, res){
   
 })
 // 3) to handle deleting a post
-app.delete('/posts/id', function(req, res){
-  let id = req.params._id
-  console.log(id);
-  /*Post.findByIdAndRemove(id, (err, posts) =>{
-    if(err) return res.status(500).send(err){
-      console.log(err);
-    }else{
-   */ 
-  })
+app.delete('/posts/:postId', function(req, res){
+  //What is the current situation
+  //How can we know what to delete
+  //We will use either path params/query params/req.body
+  
+  let postId = req.params.postId;
+  console.log(postId);
+  Post.find({_id: postId}, function (err, post){
+    if (err) throw err;
+    console.log(post);
+  });
+  Post.findByIdAndRemove(postId, function(err, removedPost){
+    console.log(postId + ' was removed!');
+  });
+});
 
 
 
