@@ -7,13 +7,7 @@
 
         }
 
-        /*findPostById(id) {
-            for (var i = 0; i < posts.length; i += 1) {
-              if (posts[i].id === id) {
-                return this.posts[i];
-              }
-            }
-        }*/
+      
 
         getPosts() {
             return $.get('/posts')
@@ -26,7 +20,7 @@
 
         addPost(postText) {
             var newPost = {text: postText};
-           return $.ajax({
+             $.ajax({
                 method: "POST",
                 url: '/posts',
                 data: newPost
@@ -39,14 +33,12 @@
           
         }
 
-        removePost(index) {
+        removePost(Id) {
            return $.ajax({
                 method: "DELETE",
-                url: '/posts/' + index,
+                url: '/posts/' + Id,
                 
-            }).then();
-            // this.posts.splice(0, 1);
-            // console.log(this.posts);
+            });
         }
 
         addComment(newComment, postIndex) {

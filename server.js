@@ -49,6 +49,7 @@ app.get('/posts', function(req, res){
   Post.find({}, function(err, allPosts){
     if(err){
       console.log(err);
+      res.sendStatus(500).send("sorry");
     } else {
       res.send(allPosts);
     }
@@ -69,9 +70,6 @@ app.post('/posts', function(req, res){
 })
 // 3) to handle deleting a post
 app.delete('/posts/:postId', function(req, res){
-  //What is the current situation
-  //How can we know what to delete
-  //We will use either path params/query params/req.body
   
   let postId = req.params.postId;
   console.log(postId);
@@ -80,7 +78,9 @@ app.delete('/posts/:postId', function(req, res){
     console.log(post);
   });
   Post.findByIdAndRemove(postId, function(err, removedPost){
+    if (err) throw err;
     console.log(postId + ' was removed!');
+    res.send(removedPost);
   });
 });
 
