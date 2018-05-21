@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 
 const SERVER_PORT = 8080;
 
+console.log(process.env.CONNECTION_STRING )
 mongoose.connect(process.env.CONNECTION_STRING || 'mongodb://localhost/spacebookDB', function (err) {
 
   if (err) {
@@ -108,7 +109,7 @@ app.delete('/posts/:postId', function (req, res) {
 
 // 4) to handle adding a comment to a post
 // 5) to handle deleting a comment from a post
-
-app.listen(process.env.PORT || SERVER_PORT, () => {
-  console.log("Server started on port " + SERVER_PORT);
+let port = process.env.PORT || SERVER_PORT;
+app.listen(port, () => {
+  console.log("*** Server started on port " + (port));
 })
