@@ -5,7 +5,11 @@ var mongoose = require('mongoose');
 
 const SERVER_PORT = 8080;
 
-mongoose.connect(process.env.CONNECTION_STRING || 'mongodb://localhost/spacebookDB', function() {
+mongoose.connect(process.env.CONNECTION_STRING || 'mongodb://localhost/spacebookDB', function (err) {
+
+  if (err) {
+    return console.error(err);
+  }
   console.log("DB connection established!!!");
 })
 
@@ -15,7 +19,9 @@ var app = express();
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
 
 
@@ -30,11 +36,23 @@ var anotherPost = new Post({
   text: "I made a post, too!"
 })
 
-aPost.comments.push({text: "Nice post!", user: "Wilson"});
-aPost.comments.push({text: "How is the weather?", user: "Phyllis"});
-aPost.comments.push({text: "Theres a snake in my boot!", user: "Woody"});
+aPost.comments.push({
+  text: "Nice post!",
+  user: "Wilson"
+});
+aPost.comments.push({
+  text: "How is the weather?",
+  user: "Phyllis"
+});
+aPost.comments.push({
+  text: "Theres a snake in my boot!",
+  user: "Woody"
+});
 
-anotherPost.comments.push({text: "this post is okay", user: "Nelson"});
+anotherPost.comments.push({
+  text: "this post is okay",
+  user: "Nelson"
+});
 
 /*
 aPost.save()
@@ -45,9 +63,9 @@ anotherPost.save();
 // These will define your API:
 
 // 1) to handle getting all posts and their comments
-app.get('/posts', function(req, res){
-  Post.find({}, function(err, allPosts){
-    if(err){
+app.get('/posts', function (req, res) {
+  Post.find({}, function (err, allPosts) {
+    if (err) {
       console.log(err);
       res.sendStatus(500).send("sorry");
     } else {
@@ -56,28 +74,30 @@ app.get('/posts', function(req, res){
   });
 });
 // 2) to handle adding a post
-app.post('/posts', function(req, res){
+app.post('/posts', function (req, res) {
   var postFromClient = req.body;
   console.log(postFromClient)
 
   var NewPost = new Post(postFromClient);
-  NewPost.save(function(err, savedPost){
+  NewPost.save(function (err, savedPost) {
     console.log('did it save into the db?')
     console.log(savedPost);
     res.send(savedPost);
-  }) 
-  
+  })
+
 })
 // 3) to handle deleting a post
-app.delete('/posts/:postId', function(req, res){
-  
+app.delete('/posts/:postId', function (req, res) {
+
   let postId = req.params.postId;
   console.log(postId);
-  Post.find({_id: postId}, function (err, post){
+  Post.find({
+    _id: postId
+  }, function (err, post) {
     if (err) throw err;
     console.log(post);
   });
-  Post.findByIdAndRemove(postId, function(err, removedPost){
+  Post.findByIdAndRemove(postId, function (err, removedPost) {
     if (err) throw err;
     console.log(postId + ' was removed!');
     res.send(removedPost);
